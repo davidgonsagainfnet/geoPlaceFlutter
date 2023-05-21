@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:geoplaceflutter/models/cep.dart';
-import 'package:geoplaceflutter/repositories/cep_repository.dart';
+import 'package:geoplaceflutter/repositories/cep/cep_repository.dart';
 import 'package:http/http.dart';
 
 class CepService {

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geoplaceflutter/components/alert.dart';
 import 'package:geoplaceflutter/models/cep.dart';
+import 'package:geoplaceflutter/models/lugar.dart';
 import 'package:geoplaceflutter/services/cep_service.dart';
+import 'package:geoplaceflutter/services/lugar_service.dart';
 
 import '../services/formato_cep.dart';
 
@@ -23,6 +26,11 @@ class _CadastroScreenState extends State<CadastroScreen> {
   TextEditingController estadoController = TextEditingController();
   TextEditingController descricaoController = TextEditingController();
 
+  bool checkConheco = false;
+  bool checkQueroConheco = false;
+  bool checkEvitar = false;
+  int  statusLugar = 0;
+
   void _buscaCep(String cep){
       var listCep = CepService();
       Future<Cep> futureCep = listCep.listCep(cep);
@@ -38,7 +46,23 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
   void _validarCampos() {
     if( _formKey.currentState?.validate() == true){
-      print("ola");
+      if(statusLugar != 0){
+        var dados = Lugar(  double.parse(longitudeController.text), 
+                          double.parse(latitudeController.text), 
+                          cepController.text, 
+                          ruaController.text, 
+                          cidadeController.text, 
+                          estadoController.text, 
+                          descricaoController.text, 
+                          statusLugar);
+        var insertLugar = LugarService();
+        insertLugar.insert(dados);
+      } else {
+        alertCustom(context, "Campo sem valor", "Informe o check de status do lugar.");
+      }
+      
+    } else {
+      alertCustom(context, "Campo sem valor", "Existe campos sem valor.");
     }
   }
 
@@ -184,6 +208,66 @@ class _CadastroScreenState extends State<CadastroScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                              const Text("Conheço"),
+                              Switch(
+                                value: checkConheco, 
+                                activeColor: Colors.green,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    checkConheco      = value;
+                                    checkQueroConheco = false;
+                                    checkEvitar       = false;
+                                    statusLugar       = 1;  
+                                  });
+                                } 
+                              ),
+                          ],
+                          ),
+                          const SizedBox(width: 16.0),
+                          Column(
+                          children: [
+                              const Text("Quero conheçer"),
+                              Switch(
+                                value: checkQueroConheco, 
+                                activeColor: Colors.blue,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    checkConheco      = false;
+                                    checkQueroConheco = value;
+                                    checkEvitar       = false;
+                                    statusLugar       = 2;    
+                                  });
+                                } 
+                              ),
+                          ],
+                          ),
+                          const SizedBox(width: 16.0),
+                          Column(
+                          children: [
+                              const Text("Evitar"),
+                              Switch(
+                                value: checkEvitar, 
+                                activeColor: Colors.red,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    checkConheco      = false;
+                                    checkQueroConheco = false;
+                                    checkEvitar       = value;
+                                    statusLugar       = 3;  
+                                  });
+                                } 
+                              ),
+                          ],
+                          ),
+                        ],
+                    ),
+                    
                     const SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
