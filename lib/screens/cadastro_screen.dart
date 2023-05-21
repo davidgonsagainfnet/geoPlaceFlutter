@@ -58,6 +58,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           statusLugar);
         var insertLugar = LugarService();
         insertLugar.insert(dados);
+        Navigator.pop(context);
       } else {
         alertCustom(context, "Campo sem valor", "Informe o check de status do lugar.");
       }
