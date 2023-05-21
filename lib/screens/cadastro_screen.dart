@@ -6,6 +6,7 @@ import 'package:geoplaceflutter/models/lugar.dart';
 import 'package:geoplaceflutter/services/cep_service.dart';
 import 'package:geoplaceflutter/services/lugar_service.dart';
 
+import '../components/inputText.dart';
 import '../services/formato_cep.dart';
 
 class CadastroScreen extends StatefulWidget {
@@ -95,35 +96,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
                 child: Column(
                   children: [
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: longitudeController,
-                      validator: (value) {
-                        if(value!.isEmpty) return "Campo Obrigatorio";
-                        return null;
-                      },
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Longitude',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+                    InputText(labelText: "Longitude", controller: longitudeController, textInputType: TextInputType.number),
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: latitudeController,
-                      validator: (value) {
-                        if(value!.isEmpty) return "Campo Obrigatorio";
-                        return null;
-                      },
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Latitude',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+                    InputText(labelText: "Latitude", controller: latitudeController, textInputType: TextInputType.number),
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: cepController,
@@ -149,65 +124,13 @@ class _CadastroScreenState extends State<CadastroScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: ruaController,
-                      validator: (value) {
-                        if(value!.isEmpty) return "Campo Obrigatorio";
-                        return null;
-                      },
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        labelText: 'Rua',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+                    InputText(labelText: "Rua", controller: ruaController, textInputType: TextInputType.text),
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: cidadeController,
-                      validator: (value) {
-                        if(value!.isEmpty) return "Campo Obrigatorio";
-                        return null;
-                      },
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        labelText: 'Cidade',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+                    InputText(labelText: "Cidade", controller: cidadeController, textInputType: TextInputType.text),
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: estadoController,
-                      validator: (value) {
-                        if(value!.isEmpty) return "Campo Obrigatorio";
-                        return null;
-                      },
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        labelText: 'Estado',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+                    InputText(labelText: "Estado", controller: estadoController, textInputType: TextInputType.text),
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: descricaoController,
-                      validator: (value) {
-                        if(value!.isEmpty) return "Campo Obrigatorio";
-                        return null;
-                      },
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        labelText: 'Descrição do Local',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+                    InputText(labelText: "Descrição do Local", controller: descricaoController, textInputType: TextInputType.text),
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
