@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geoplaceflutter/routes/route_paths.dart';
 import 'package:geoplaceflutter/screens/cadastro_screen.dart';
 import 'package:geoplaceflutter/screens/home_screen.dart';
+import 'package:geoplaceflutter/screens/lista_screen.dart';
 
 void main() {
   runApp(App());
@@ -13,8 +14,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       routes: {
         RoutePaths.HOME: (context) => const HomeScreen(),
-        RoutePaths.CADASTRO: (context) => CadastroScreen(),
-        RoutePaths.LISTALUGAR: (context) => const Text("LISTA LUGAR")
+        RoutePaths.CADASTRO: (context) => const CadastroScreen(),
+        RoutePaths.LISTALUGAR: (context) => const ListaScreen()
       },
     );
   }

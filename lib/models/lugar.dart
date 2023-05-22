@@ -28,6 +28,7 @@ class Lugar {
     'cep'      : cep,
     'rua'      : rua,
     'cidade'   : cidade,
+    'estado'   : estado,
     'descricao': descricao,
     'status'   : status
   };
