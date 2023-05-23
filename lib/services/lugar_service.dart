@@ -28,4 +28,13 @@ class LugarService {
       throw Exception("Problema ao inserir registro.");
     }
   }
+
+  Future<Response> delete(String idLugar) async{
+    try{
+      return await _lugarRepository.delete(idLugar.toString());
+    } catch (err){
+      print(err);
+      throw Exception("Problema ao excluir registro.");
+    }
+  }
 }

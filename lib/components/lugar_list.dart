@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:geoplaceflutter/components/lugar_list_item.dart';
 import 'package:geoplaceflutter/models/lugar.dart';
 import 'package:geoplaceflutter/services/lugar_service.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/lugar_provider.dart';
 
 class LugarList extends StatelessWidget {
   const LugarList({super.key});
@@ -13,13 +16,15 @@ class LugarList extends StatelessWidget {
       return lugares.map((lugar) => LugarListItem(lugar)).toList();
     }
 
+    final _lugar = Provider.of<LugarProvider>(context);
+
     return FutureBuilder<List<Lugar>>(
-      future: LugarService().list(),
+      future: _lugar.list(), //LugarService().list(),
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting){
           return const Center(child: CircularProgressIndicator(),);
         } else if (snapshot.hasError) {
-          return Center(child: Text("Erro ao consultar dados: ${snapshot.error}"),);
+          return Center(child: Center(child: Text("Erro ao consultar dados: ${snapshot.error}"),),);
         } else if (snapshot.hasData){
           final list = snapshot.data;
           if(list != null && list.isNotEmpty){
