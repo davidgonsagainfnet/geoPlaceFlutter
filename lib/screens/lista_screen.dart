@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geoplaceflutter/components/lugar_list.dart';
 import 'package:geoplaceflutter/providers/lugar_provider.dart';
+import 'package:geoplaceflutter/routes/route_paths.dart';
 import 'package:provider/provider.dart';
 
 class ListaScreen extends StatefulWidget {
@@ -21,6 +22,12 @@ class _ListaScreenState extends State<ListaScreen>{
       body: ChangeNotifierProvider(
         create: (context) => LugarProvider(),
         child: Column(children: const [LugarList(),],), 
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).pushNamed(RoutePaths.CADASTRO);
+        },
       ),
     );
   }

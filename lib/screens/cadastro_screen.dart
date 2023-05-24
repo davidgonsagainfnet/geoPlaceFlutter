@@ -6,6 +6,7 @@ import 'package:geoplaceflutter/models/lugar.dart';
 import 'package:geoplaceflutter/routes/route_paths.dart';
 import 'package:geoplaceflutter/services/cep_service.dart';
 import 'package:geoplaceflutter/services/lugar_service.dart';
+import 'package:location/location.dart';
 
 import '../components/inputText.dart';
 import '../services/formato_cep.dart';
@@ -18,7 +19,7 @@ class CadastroScreen extends StatefulWidget {
 }
 
 class _CadastroScreenState extends State<CadastroScreen> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   
 
   TextEditingController longitudeController = TextEditingController();
@@ -40,6 +41,33 @@ class _CadastroScreenState extends State<CadastroScreen> {
   @override
   void initState() {
       super.initState();
+      getLocation().then((value) {
+        if(isInclusao){
+          longitudeController.text = value.longitude.toString();
+          latitudeController.text  = value.latitude.toString();
+        }
+        
+      });
+  }
+
+  Future<LocationData> getLocation() async {
+    Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if(!serviceEnabled){
+      serviceEnabled = await location.requestService();
+      if(!serviceEnabled) Future.value(null);
+    }
+    permissionGranted = await location.hasPermission();
+    if(permissionGranted == PermissionStatus.denied){
+      permissionGranted = await location.requestPermission();
+      if(permissionGranted != PermissionStatus.granted) Future.value(null);
+    }
+    locationData = await location.getLocation();
+    return locationData;
   }
 
   void _buscaCep(String cep){
@@ -191,6 +219,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           children: [
                               const Text("Conheço"),
                               Switch(
+                                key: UniqueKey(),
                                 value: checkConheco, 
                                 activeColor: Colors.green,
                                 onChanged: (bool value) {
