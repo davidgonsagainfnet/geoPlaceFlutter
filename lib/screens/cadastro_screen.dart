@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:geoplaceflutter/components/alert.dart';
 import 'package:geoplaceflutter/models/cep.dart';
 import 'package:geoplaceflutter/models/lugar.dart';
+import 'package:geoplaceflutter/routes/route_paths.dart';
 import 'package:geoplaceflutter/services/cep_service.dart';
 import 'package:geoplaceflutter/services/lugar_service.dart';
 
@@ -18,6 +19,7 @@ class CadastroScreen extends StatefulWidget {
 
 class _CadastroScreenState extends State<CadastroScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
 
   TextEditingController longitudeController = TextEditingController();
   TextEditingController latitudeController = TextEditingController();
@@ -31,6 +33,14 @@ class _CadastroScreenState extends State<CadastroScreen> {
   bool checkQueroConheco = false;
   bool checkEvitar = false;
   int  statusLugar = 0;
+  String nomeBotao = "Salvar Cadastro";
+  bool isInclusao = true;
+  String idEdit = "";
+
+  @override
+  void initState() {
+      super.initState();
+  }
 
   void _buscaCep(String cep){
       var listCep = CepService();
@@ -56,9 +66,15 @@ class _CadastroScreenState extends State<CadastroScreen> {
                           estadoController.text, 
                           descricaoController.text, 
                           statusLugar);
-        var insertLugar = LugarService();
-        insertLugar.insert(dados);
-        Navigator.pop(context);
+        var servico = LugarService();
+
+        if(isInclusao){
+          servico.insert(dados);
+        } else {
+          servico.editar(idEdit, dados);
+        }
+        
+        Navigator.pushNamed(context, RoutePaths.LISTALUGAR);
       } else {
         alertCustom(context, "Campo sem valor", "Informe o check de status do lugar.");
       }
@@ -71,6 +87,41 @@ class _CadastroScreenState extends State<CadastroScreen> {
   @override
   Widget build(BuildContext context) {
 
+    final Lugar? lugar = ModalRoute.of(context)!.settings.arguments as Lugar?;
+
+    if(lugar != null){
+      longitudeController.text = lugar.longitude.toString();
+      latitudeController.text  = lugar.latitude.toString();
+      cepController.text = lugar.cep;
+      ruaController.text = lugar.rua;
+      cidadeController.text = lugar.cidade;
+      estadoController.text = lugar.estado;
+      descricaoController.text = lugar.descricao;
+      statusLugar = lugar.status;
+      switch(statusLugar){
+        case 1: setState(() {
+                  checkConheco      = true;
+                  checkQueroConheco = false;
+                  checkEvitar       = false;
+                });
+        break;
+        case 2: setState(() {
+                  checkConheco      = false;
+                  checkQueroConheco = true;
+                  checkEvitar       = false;
+                });
+        break;
+        case 3: setState(() {
+                  checkConheco      = false;
+                  checkQueroConheco = false;
+                  checkEvitar       = true;
+                });
+        break;
+      }
+      nomeBotao = "Alterar Cadastro";
+      isInclusao = false;
+      idEdit = lugar.id!;
+    }
 
     var image = Image.asset(
       "assets/logo.png",
@@ -197,7 +248,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: _validarCampos,
-                        child: const Text("Salvar Local"),
+                        child: Text(nomeBotao),
                       ),
                     ),
                     const SizedBox(height: 16),

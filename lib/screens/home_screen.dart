@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../routes/route_paths.dart';
 
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var network = Lottie.network("https://assets3.lottiefiles.com/packages/lf20_u1pr4zua.json");
     return Scaffold(
       appBar: AppBar(title: Center( child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -41,7 +43,39 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       ),
       ),
-      body: const Center(child: Text("Aqui fica o mapa")),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.green,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 120, bottom: 24),
+              child: Lottie.network(
+                "https://assets5.lottiefiles.com/packages/lf20_6YCRFI.json",
+              ),
+            ),
+            const Text(
+              "Seu lugar favorito",
+              style: TextStyle(
+                fontSize: 32,
+                letterSpacing: -1.2,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 12),
+              child: Text(
+                "App Perfeito para marca Seu locais favoritos",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blue, 
         currentIndex: _currentIndex,

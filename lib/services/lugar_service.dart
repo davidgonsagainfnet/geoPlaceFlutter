@@ -37,4 +37,15 @@ class LugarService {
       throw Exception("Problema ao excluir registro.");
     }
   }
+
+  Future<String> editar(String id, Lugar lugar) async{
+    try{
+      String json = jsonEncode(lugar.toJson());
+      Response response = await _lugarRepository.update(id, json);
+      return jsonDecode(response.body) as String;
+    } catch (err){
+      print(err);
+      throw Exception("Problema ao editar registro.");
+    }
+  }
 }

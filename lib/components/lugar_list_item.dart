@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geoplaceflutter/providers/lugar_provider.dart';
+import 'package:geoplaceflutter/routes/route_paths.dart';
 import 'package:provider/provider.dart';
 import '../models/lugar.dart';
 
@@ -30,7 +31,9 @@ class LugarListItem extends StatelessWidget {
                           child: ListTile(title: Text("${lugar.cidade} - ${lugar.estado}   LT/LG (${lugar.latitude} - ${lugar.longitude})"), 
                               subtitle: Text(lugar.descricao), 
                               trailing: Row(mainAxisSize: MainAxisSize.min, 
-                                              children: [IconButton(icon: Image.asset("assets/edit.png"), onPressed: () {  },),
+                                              children: [IconButton(icon: Image.asset("assets/edit.png"), onPressed: () {
+                                                Navigator.pushNamed(context, RoutePaths.CADASTRO, arguments: lugar);
+                                              },),
                                                          const SizedBox(width: 1),
                                                          IconButton(icon: Image.asset("assets/lixeira.png"), onPressed: () {  
                                                               showDialog(
