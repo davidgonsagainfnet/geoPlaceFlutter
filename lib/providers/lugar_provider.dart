@@ -15,8 +15,8 @@ class LugarProvider with ChangeNotifier {
   }
 
   void removeItem(String idItem) async {
-    Response isApagado = await servico.delete(idItem);
-    if(isApagado.statusCode == 200){
+    final isApagado = await servico.delete(idItem);
+    if(isApagado){
       itens.removeWhere((item) => item.id == idItem);
       notifyListeners();
     }

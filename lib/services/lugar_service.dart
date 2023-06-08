@@ -9,9 +9,15 @@ class LugarService {
 
   Future<List<Lugar>> list() async{
     try{
-      Response response = await _lugarRepository.list();
-      Map<String, dynamic> json = jsonDecode(response.body);
-      return Lugar.listFromJson(json);
+      final List<Lugar> list = [];
+      final response = await _lugarRepository.list();
+      final docs = response.docs;
+      
+      for(var doc in docs){
+        list.add(Lugar.fromJson(doc.id, doc.data()));
+      }
+      
+      return list;
     } catch (err) {
       print(err);
       throw Exception("Problema ao consultar lista.");
@@ -20,18 +26,18 @@ class LugarService {
 
   Future<String> insert(Lugar lugar)async{
     try{
-      String json = jsonEncode(lugar.toJson());
-      Response response = await _lugarRepository.insert(json);
-      return jsonDecode(response.body) as String;
+      final response = await _lugarRepository.insert(lugar.toJson());
+      return response.id;
     } catch (err){
       print(err);
       throw Exception("Problema ao inserir registro.");
     }
   }
 
-  Future<Response> delete(String idLugar) async{
+  Future<bool> delete(String idLugar) async{
     try{
-      return await _lugarRepository.delete(idLugar.toString());
+      await _lugarRepository.delete(idLugar.toString());
+      return true;
     } catch (err){
       print(err);
       throw Exception("Problema ao excluir registro.");
@@ -40,9 +46,8 @@ class LugarService {
 
   Future<String> editar(String id, Lugar lugar) async{
     try{
-      String json = jsonEncode(lugar.toJson());
-      Response response = await _lugarRepository.update(id, json);
-      return jsonDecode(response.body) as String;
+      await _lugarRepository.update(id, lugar.toJson());
+      return "";
     } catch (err){
       print(err);
       throw Exception("Problema ao editar registro.");

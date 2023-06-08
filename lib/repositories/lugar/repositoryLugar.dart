@@ -1,34 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 abstract class RepositoryLugar{
+  final db = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final _baseUrlLugar = "https://geoplaceflutter-default-rtdb.firebaseio.com/";
   final String _resource;
 
   RepositoryLugar(this._resource);
 
-  Future<http.Response> list(){
-    final uri = Uri.parse("$_baseUrlLugar/$_resource.json");
-    return http.get(uri);
+  Future<QuerySnapshot<Map<String, dynamic>>> list() {
+    return db.collection(_resource).where('idUser', isEqualTo: auth.currentUser?.uid).get();
   }
 
-  Future<http.Response> insert(String data) {
-    final uri = Uri.parse("$_baseUrlLugar/$_resource.json");
-    return http.post(uri, body: data);
+  Future<DocumentReference<Map<String, dynamic>>> insert(Map<String, dynamic> data) {
+    return db.collection(_resource).add(data);
   }
 
-  Future<http.Response> show(String id){
-    final uri = Uri.parse("$_baseUrlLugar/$_resource/$id.json");
-    return http.get(uri);
+  Future<DocumentSnapshot<Map<String, dynamic>>> show(String id){
+    return db.collection(_resource).doc(id).get();
   }
 
-  Future<http.Response> update(String id, String data){
-    final uri = Uri.parse("$_baseUrlLugar/$_resource/$id.json");
-    return http.put(uri, body: data);
+  Future<void> update(String id, Map<String, dynamic> data){
+    return db.collection(_resource).doc(id).set(data);
   }
 
-  Future<http.Response> delete(String id){
-    final uri = Uri.parse("$_baseUrlLugar/$_resource/$id.json");
-    return http.delete(uri);
+  Future<void> delete(String id){
+    return db.collection(_resource).doc(id).delete();
   }
 
 }

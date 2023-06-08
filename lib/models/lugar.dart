@@ -8,11 +8,11 @@ class Lugar {
   String estado;
   String descricao;
   int status;
+  String idUser;
 
-  Lugar(this.longitude, this.latitude, this.cep, this.rua, this.cidade, this.estado, this.descricao, this.status);
+  Lugar(this.longitude, this.latitude, this.cep, this.rua, this.cidade, this.estado, this.descricao, this.status, this.idUser);
 
-  Lugar.fromJson(Map<String, dynamic> json): 
-      id      = json['id'],
+  Lugar.fromJson(String this.id, Map<String, dynamic> json): 
       longitude = json['longitude'],
       latitude  = json['latitude'],
       cep       = json['cep'],
@@ -20,7 +20,8 @@ class Lugar {
       cidade    = json['cidade'],
       estado    = json['estado'],
       descricao = json['descricao'],
-      status    = json['status'];
+      status    = json['status'],
+      idUser    = json['idUser'];
 
   Map<String, dynamic> toJson() => {
     'longitude': longitude,
@@ -30,15 +31,7 @@ class Lugar {
     'cidade'   : cidade,
     'estado'   : estado,
     'descricao': descricao,
-    'status'   : status
+    'status'   : status,
+    'idUser'   : idUser,
   };
-
-  static List<Lugar> listFromJson(Map<String, dynamic> json){
-    List<Lugar> lugar = [];
-    json.forEach((key, value) {
-      Map<String, dynamic> item = {"id": key, ...value};
-      lugar.add(Lugar.fromJson(item));
-    });
-    return lugar;
-  }
 }
