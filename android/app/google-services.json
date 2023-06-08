@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "27600833255",
+    "firebase_url": "https://geoplaceflutter-default-rtdb.firebaseio.com",
+    "project_id": "geoplaceflutter",
+    "storage_bucket": "geoplaceflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27600833255:android:bea2a9b70bb9904f3cf042",
+        "android_client_info": {
+          "package_name": "geoplaceflutter.davidgonsagainfnet.com.github.geoplaceflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "27600833255-js70dqmg96vbd612ggfs13bscu8gek0p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKI-5_4k4w_0VThaI3t4R6HCXs2bSewQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "27600833255-js70dqmg96vbd612ggfs13bscu8gek0p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
