@@ -1,8 +1,8 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:geoplaceflutter/models/lugar.dart';
 import 'package:geoplaceflutter/repositories/lugar/lugar_repository.dart';
-import 'package:http/http.dart';
+import 'package:path/path.dart';
 
 class LugarService {
   final LugarRepository _lugarRepository = LugarRepository();
@@ -24,9 +24,12 @@ class LugarService {
     }
   }
 
-  Future<String> insert(Lugar lugar)async{
+  Future<String> insert(Lugar lugar, File? file)async{
     try{
       final response = await _lugarRepository.insert(lugar.toJson());
+      if(file != null){
+        await _lugarRepository.uploadImagem("${response.id}${extension(file.path)}", file);
+      }
       return response.id;
     } catch (err){
       print(err);
@@ -44,9 +47,12 @@ class LugarService {
     }
   }
 
-  Future<String> editar(String id, Lugar lugar) async{
+  Future<String> editar(String id, Lugar lugar, File? file) async{
     try{
       await _lugarRepository.update(id, lugar.toJson());
+      if(file != null){
+        await _lugarRepository.uploadImagem("$id${extension(file.path)}", file);
+      }
       return "";
     } catch (err){
       print(err);

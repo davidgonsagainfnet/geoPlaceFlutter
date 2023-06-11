@@ -1,14 +1,17 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geoplaceflutter/components/alert.dart';
 import 'package:geoplaceflutter/models/cep.dart';
 import 'package:geoplaceflutter/models/lugar.dart';
 import 'package:geoplaceflutter/routes/route_paths.dart';
 import 'package:geoplaceflutter/services/cep_service.dart';
 import 'package:geoplaceflutter/services/lugar_service.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 
+import '../components/alert.dart';
 import '../components/inputText.dart';
 import '../services/formato_cep.dart';
 
@@ -22,6 +25,53 @@ class CadastroScreen extends StatefulWidget {
 class _CadastroScreenState extends State<CadastroScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FirebaseAuth auth = FirebaseAuth.instance;
+
+  File? imageFile;
+
+  Future<void> pickImage(ImageSource imageSource) async{
+    final picker = ImagePicker();
+    final pickerImage = await picker.pickImage(
+                                              source: imageSource,
+                                              imageQuality: 50,
+                                              maxWidth: 200, 
+                                            );
+    if(pickerImage != null){
+      setState(() {
+        imageFile = File(pickerImage.path);
+      });
+    }
+  }
+
+
+  void alertCustomPick() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Escolha de captura de imagem"),
+          content: const Text("Como deseja capturar a imagem?"),
+          actions: [
+            TextButton(
+              child: const Text('Camera'),
+              onPressed: () {
+                pickImage(ImageSource.camera);
+                Navigator.of(context).pop(); // Fechar o alerta
+              },
+            ),
+            TextButton(
+              child: const Text('Galeria'),
+              onPressed: () {
+                pickImage(ImageSource.gallery);
+                Navigator.of(context).pop(); // Fechar o alerta
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+ 
   
 
   TextEditingController longitudeController = TextEditingController();
@@ -100,9 +150,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
         var servico = LugarService();
 
         if(isInclusao){
-          servico.insert(dados);
+          servico.insert(dados, imageFile);
         } else {
-          servico.editar(idEdit, dados);
+          servico.editar(idEdit, dados, imageFile);
         }
         
         Navigator.pushNamed(context, RoutePaths.LISTALUGAR);
@@ -117,6 +167,8 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+  
 
     final Lugar? lugar = ModalRoute.of(context)!.settings.arguments as Lugar?;
 
@@ -275,6 +327,13 @@ class _CadastroScreenState extends State<CadastroScreen> {
                         ],
                     ),
                     
+                    const SizedBox(height: 16),
+                    IconButton(onPressed: () { alertCustomPick(); } , 
+                               icon: const Icon(Icons.camera)
+                    ),
+                    
+                    imageFile != null ? Image.file(imageFile!) : const Icon(Icons.no_photography),
+
                     const SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
