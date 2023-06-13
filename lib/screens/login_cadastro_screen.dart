@@ -16,6 +16,7 @@ class _LoginCadastroScreenState extends State<LoginCadastroScreen> {
   TextEditingController loginController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
   TextEditingController senhaConfirmeController = TextEditingController();
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   bool isLoading = false;
   final imgLogin = Lottie.asset("assets/registro.json");
@@ -25,25 +26,18 @@ class _LoginCadastroScreenState extends State<LoginCadastroScreen> {
   void initState() {
     super.initState();
     loadImage();
+    _bloqueio();
   }
 
   void loadImage() async {
-  await Future.delayed(const Duration(seconds: 1)); // Simulando um carregamento assíncrono
+    await Future.delayed(const Duration(seconds: 1)); // Simulando um carregamento assíncrono
 
-  setState(() {
-    isLoadingImg = false;
-  });
-}
+    setState(() {
+      isLoadingImg = false;
+    });
+  }
 
-
-  
-
-  @override
-  Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-
-
-    Future<void> _cadastrar() async {
+  Future<void> _cadastrar() async {
       setState(() {
         isLoading = true;
       });
@@ -77,12 +71,18 @@ class _LoginCadastroScreenState extends State<LoginCadastroScreen> {
           isLoading = false;
         });
       }
-    }
+  }
 
+  void _bloqueio() {
     if (auth.currentUser != null) {
       Navigator.pushNamed(context, RoutePaths.HOME);
     }
+  }
+  
 
+  @override
+  Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.blue[900],
       body: SingleChildScrollView(

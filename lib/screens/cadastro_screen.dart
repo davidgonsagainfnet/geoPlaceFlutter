@@ -23,8 +23,26 @@ class CadastroScreen extends StatefulWidget {
 }
 
 class _CadastroScreenState extends State<CadastroScreen> {
+
+  TextEditingController longitudeController = TextEditingController();
+  TextEditingController latitudeController = TextEditingController();
+  TextEditingController cepController = TextEditingController();
+  TextEditingController ruaController = TextEditingController();
+  TextEditingController cidadeController = TextEditingController();
+  TextEditingController estadoController = TextEditingController();
+  TextEditingController descricaoController = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FirebaseAuth auth = FirebaseAuth.instance;
+
+  bool checkConheco = false;
+  bool checkQueroConheco = false;
+  bool checkEvitar = false;
+  int  statusLugar = 0;
+  String nomeBotao = "Salvar Cadastro";
+  bool isInclusao = true;
+  String idEdit = "";
+
 
   File? imageFile;
 
@@ -72,56 +90,6 @@ class _CadastroScreenState extends State<CadastroScreen> {
   }
 
  
-  
-
-  TextEditingController longitudeController = TextEditingController();
-  TextEditingController latitudeController = TextEditingController();
-  TextEditingController cepController = TextEditingController();
-  TextEditingController ruaController = TextEditingController();
-  TextEditingController cidadeController = TextEditingController();
-  TextEditingController estadoController = TextEditingController();
-  TextEditingController descricaoController = TextEditingController();
-
-  bool checkConheco = false;
-  bool checkQueroConheco = false;
-  bool checkEvitar = false;
-  int  statusLugar = 0;
-  String nomeBotao = "Salvar Cadastro";
-  bool isInclusao = true;
-  String idEdit = "";
-
-  @override
-  void initState() {
-      super.initState();
-      getLocation().then((value) {
-        if(isInclusao){
-          longitudeController.text = value.longitude.toString();
-          latitudeController.text  = value.latitude.toString();
-        }
-        
-      });
-  }
-
-  Future<LocationData> getLocation() async {
-    Location location = Location();
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    LocationData locationData;
-
-    serviceEnabled = await location.serviceEnabled();
-    if(!serviceEnabled){
-      serviceEnabled = await location.requestService();
-      if(!serviceEnabled) Future.value(null);
-    }
-    permissionGranted = await location.hasPermission();
-    if(permissionGranted == PermissionStatus.denied){
-      permissionGranted = await location.requestPermission();
-      if(permissionGranted != PermissionStatus.granted) Future.value(null);
-    }
-    locationData = await location.getLocation();
-    return locationData;
-  }
-
   void _buscaCep(String cep){
       var listCep = CepService();
       Future<Cep> futureCep = listCep.listCep(cep);
@@ -165,12 +133,9 @@ class _CadastroScreenState extends State<CadastroScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
 
-  
-
-    final Lugar? lugar = ModalRoute.of(context)!.settings.arguments as Lugar?;
+  void _setaCampos(BuildContext contexto){
+    final Lugar? lugar = ModalRoute.of(contexto)!.settings.arguments as Lugar?;
 
     if(lugar != null){
       longitudeController.text = lugar.longitude.toString();
@@ -205,12 +170,54 @@ class _CadastroScreenState extends State<CadastroScreen> {
       isInclusao = false;
       idEdit = lugar.id!;
     }
+  }
 
-    var image = Image.asset(
+  @override
+  void initState() {
+      super.initState();
+      
+      getLocation().then((value) {
+        if(isInclusao){
+          longitudeController.text = value.longitude.toString();
+          latitudeController.text  = value.latitude.toString();
+        }
+        
+      });
+  }
+
+
+  Future<LocationData> getLocation() async {
+    Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if(!serviceEnabled){
+      serviceEnabled = await location.requestService();
+      if(!serviceEnabled) Future.value(null);
+    }
+    permissionGranted = await location.hasPermission();
+    if(permissionGranted == PermissionStatus.denied){
+      permissionGranted = await location.requestPermission();
+      if(permissionGranted != PermissionStatus.granted) Future.value(null);
+    }
+    locationData = await location.getLocation();
+    return locationData;
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    _setaCampos(context);
+
+    final image = Image.asset(
       "assets/logo.png",
       width: 200,
       height: 200,
     );
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text("Cadastro de Local")),

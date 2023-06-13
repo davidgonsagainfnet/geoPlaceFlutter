@@ -37,21 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
   });
 }
 
-
-  void _navegacao(int index) {
-    setState(() {
-    });
-
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, RoutePaths.CADASTRO);
-        break;
-      case 1:
-        Navigator.pushNamed(context, RoutePaths.LISTALUGAR);
-        break;
-    }
-  }
-
   void _cadastroLogin() {
     Navigator.pushNamed(context, RoutePaths.CADASTROLOGIN);
   }
@@ -61,11 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushNamed(context, RoutePaths.HOME);
     }
   }
-  
-  @override
-  Widget build(BuildContext context) {
-    
-    Future<void> _esqueci() async {
+
+  Future<void> _esqueci() async {
       if(loginController.text.isEmpty){
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -122,8 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     }
-
-    
+  
+  @override
+  Widget build(BuildContext context) {
 
     return Scaffold(
       backgroundColor: Colors.green,

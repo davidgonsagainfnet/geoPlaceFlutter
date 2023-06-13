@@ -20,18 +20,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _bloqueio() {
     if(auth.currentUser == null){
-      Navigator.pushNamed(context, RoutePaths.LOGIN);
+      //Navigator.pushNamed(context, RoutePaths.LOGIN);
+      Navigator.pushReplacementNamed(context, RoutePaths.LOGIN);
     }
   }
 
-  
-
   @override
-  Widget build(BuildContext context) {
-    
+  void initState() {
+    super.initState();
     _bloqueio();
+  }
 
-    int _currentIndex = 0;
+  int _currentIndex = 0;
 
   Future<void> _navegacao(int index) async {
     
@@ -61,9 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
         break;
     }
   }
-
   
-    var network = Lottie.network("https://assets3.lottiefiles.com/packages/lf20_u1pr4zua.json");
+
+  @override
+  Widget build(BuildContext context) {
+  
     return Scaffold(
       appBar: AppBar(title: Center( child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
