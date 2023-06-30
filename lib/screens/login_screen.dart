@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geoplaceflutter/services/app_global_keys.dart';
 import 'package:lottie/lottie.dart';
 
 import '../components/inputText.dart';
@@ -136,6 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 labelText: "Email",
                 controller: loginController,
                 textInputType: TextInputType.text,
+                key: AppGlobalKeys.inputEmailKey,
               ),
               const SizedBox(height: 16),
               InputText(
@@ -143,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: senhaController,
                 textInputType: TextInputType.text,
                 isPassword: true,
+                key: AppGlobalKeys.inputSenhaKey,
               ),
               const SizedBox(height: 16),
               SizedBox(

@@ -1,15 +1,18 @@
 import 'dart:io';
 
+import 'package:api_via_cep_pk/models/cep.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geoplaceflutter/models/cep.dart';
+//import 'package:geoplaceflutter/models/cep.dart';
 import 'package:geoplaceflutter/models/lugar.dart';
 import 'package:geoplaceflutter/routes/route_paths.dart';
-import 'package:geoplaceflutter/services/cep_service.dart';
+//import 'package:geoplaceflutter/services/cep_service.dart';
 import 'package:geoplaceflutter/services/lugar_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
+
+import 'package:api_via_cep_pk/api_via_cep_pk.dart';
 
 import '../components/alert.dart';
 import '../components/inputText.dart';
